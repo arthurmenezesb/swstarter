@@ -1,10 +1,11 @@
 import React, { useState } from "react";
+import Button from "../../../components/Button";
 
 const ContentSearch: React.FC = () => {
   const [searchType, setSearchType] = useState("people");
   const [searchValue, setSearchValue] = useState("");
   return (
-    <div className="flex flex-col gap-4 min-w-sm">
+    <div className="flex flex-col gap-4 min-w-sm h-fit">
       <div>
         <p>What are your searching for?</p>
       </div>
@@ -43,12 +44,7 @@ const ContentSearch: React.FC = () => {
         />
       </div>
       <div>
-        <input
-          type="button"
-          className="p-1 rounded-full w-full border-0 bg-green-teal font-montserrat font-bold text-[#fff]"
-          value="SEARCH"
-          onClick={(e) => console.log("search click")}
-        />
+        <Button label="SEARCH" onClick={() => console.log("search click")} />
       </div>
     </div>
   );
