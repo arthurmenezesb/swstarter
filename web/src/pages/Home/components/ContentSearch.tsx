@@ -39,12 +39,17 @@ const ContentSearch: React.FC = () => {
         <input
           type="search"
           value={searchValue}
+          placeholder="e.g Chewbacca, Yoda, Boba Fett"
           className="w-full border rounded-sm"
           onChange={(e) => setSearchValue(e.target.value)}
         />
       </div>
       <div>
-        <Button label="SEARCH" onClick={() => console.log("search click")} />
+        <Button
+          label="SEARCH"
+          onClick={() => console.log("search click")}
+          disabled={!searchValue}
+        />
       </div>
     </div>
   );
