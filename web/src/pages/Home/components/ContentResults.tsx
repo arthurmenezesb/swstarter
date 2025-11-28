@@ -13,7 +13,7 @@ const ContentResults: React.FC = () => {
   };
 
   return (
-    <div className="min-w-md h-[66.66vh] flex flex-col">
+    <div className="min-w-lg h-[66.66vh] flex flex-col">
       <p className="text-lg font-bold">Results</p>
       <hr className="my-4 border-[#c4c4c4]" />
       <div className="space-y-4 flex-grow">
@@ -25,7 +25,7 @@ const ContentResults: React.FC = () => {
                   <h3 className="text-md font-semibold">{item.title}</h3>
                 </div>
                 <div className="w-1/3 flex justify-end">
-                  <Button label="See Details" onClick={handleSeeDetails(item.id)} />
+                  <Button label="SEE DETAILS" onClick={handleSeeDetails(item.id)} />
                 </div>
               </div>
               <hr className="my-4 border-[#c4c4c4]" />
@@ -33,7 +33,7 @@ const ContentResults: React.FC = () => {
           ))
         ) : (
           <div className="flex items-center justify-center h-full">
-            <p className="text-center">
+            <p className="text-center font-bold text-pinkish-grey">
               There are zero matches.
               <br />
               Use the form to search for People or Movies.
