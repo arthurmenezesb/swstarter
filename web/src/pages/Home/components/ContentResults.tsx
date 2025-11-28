@@ -10,27 +10,36 @@ const ContentResults: React.FC = () => {
 
   const handleSeeDetails = (id: number) => () => {
     console.log("See Details for ID:", id);
-    // You can add navigation or modal logic here
   };
 
   return (
-    <div className="min-w-md h-[66.66vh]">
+    <div className="min-w-md h-[66.66vh] flex flex-col">
       <p className="text-lg font-bold">Results</p>
       <hr className="my-4 border-[#c4c4c4]" />
-      <div className="mt-4 space-y-4">
-        {results.map((item) => (
-          <div key={item.id}>
-            <div className="flex items-center justify-between">
-              <div className="w-2/3">
-                <h3 className="text-md font-semibold">{item.title}</h3>
+      <div className="space-y-4 flex-grow">
+        {results.length > 0 ? (
+          results.map((item) => (
+            <div key={item.id}>
+              <div className="flex items-center justify-between">
+                <div className="w-2/3">
+                  <h3 className="text-md font-semibold">{item.title}</h3>
+                </div>
+                <div className="w-1/3 flex justify-end">
+                  <Button label="See Details" onClick={handleSeeDetails(item.id)} />
+                </div>
               </div>
-              <div className="w-1/3 flex justify-end">
-                <Button label="See Details" onClick={handleSeeDetails(item.id)} />
-              </div>
+              <hr className="my-4 border-[#c4c4c4]" />
             </div>
-            <hr className="my-4 border-[#c4c4c4]" />
+          ))
+        ) : (
+          <div className="flex items-center justify-center h-full">
+            <p className="text-center">
+              There are zero matches.
+              <br />
+              Use the form to search for People or Movies.
+            </p>
           </div>
-        ))}
+        )}
       </div>
     </div>
   );
