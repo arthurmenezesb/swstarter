@@ -11,7 +11,7 @@ const Button: React.FC<Props> = ({ label, onClick, disabled }) => {
     <input
       type="button"
       className={`p-1 rounded-full w-full border-0 ${
-        disabled ? "bg-[#c4c4c4]" : "bg-green-teal"
+        disabled ? "bg-[#c4c4c4]" : "bg-green-teal cursor-pointer"
       } font-montserrat font-bold text-[#fff]`}
       value={label}
       onClick={onClick}

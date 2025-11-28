@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import Button from "../../../components/Button";
+import { useSearch } from "../hooks/useSearch";
 
 const ContentSearch: React.FC = () => {
-  const [searchType, setSearchType] = useState("people");
+  const { searchType, setSearchType } = useSearch();
   const [searchValue, setSearchValue] = useState("");
   return (
     <div className="flex flex-col gap-4 min-w-sm h-fit">
