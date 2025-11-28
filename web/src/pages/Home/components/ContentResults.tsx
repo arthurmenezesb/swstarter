@@ -1,7 +1,11 @@
 import React from "react";
-import Button from "../../../components/Button";
+import { useNavigate } from "react-router-dom";
+import Button from "@/components/Button";
+import { useSearch } from "../hooks/useSearch";
 
 const ContentResults: React.FC = () => {
+  const navigate = useNavigate();
+  const { searchType } = useSearch();
   const results = [
     { id: 1, title: "Result Title 1" },
     { id: 2, title: "Result Title 2" },
@@ -9,13 +13,17 @@ const ContentResults: React.FC = () => {
   ];
 
   const handleSeeDetails = (id: number) => () => {
-    console.log("See Details for ID:", id);
+    if (searchType === "movies") {
+      navigate(`/movie/${id}`);
+    } else {
+      navigate(`/person/${id}`);
+    }
   };
 
   return (
     <div className="min-w-lg h-[66.66vh] flex flex-col">
       <p className="text-lg font-bold">Results</p>
-      <hr className="my-4 border-[#c4c4c4]" />
+      <hr className="my-4 border-pinkish-grey" />
       <div className="space-y-4 flex-grow">
         {results.length > 0 ? (
           results.map((item) => (
@@ -28,7 +36,7 @@ const ContentResults: React.FC = () => {
                   <Button label="SEE DETAILS" onClick={handleSeeDetails(item.id)} />
                 </div>
               </div>
-              <hr className="my-4 border-[#c4c4c4]" />
+              <hr className="my-4 border-pinkish-grey" />
             </div>
           ))
         ) : (
