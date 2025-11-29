@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { PersonResponse } from '../types/person';
+import { Person, PersonResponse } from '../types/person';
 import { cache } from '../utils/cache';
 
 const PEOPLE_CACHE_KEY = 'people';
@@ -30,4 +30,29 @@ export const getPersonFromSwapi = async (): Promise<PersonResponse> => {
   cache.set(PEOPLE_CACHE_KEY, allPeople);
 
   return allPeople;
+};
+
+export const getPersonByIdFromSwapi = async (
+  id: string
+): Promise<Person | null> => {
+  const PERSON_CACHE_KEY = `person-${id}`;
+  const cachedPerson = cache.get<Person>(PERSON_CACHE_KEY);
+  if (cachedPerson) {
+    return cachedPerson;
+  }
+
+  try {
+    const response = await axios.get(
+      `https://www.swapi.tech/api/people/${id}`
+    );
+    const person = response.data;
+    cache.set(PERSON_CACHE_KEY, person);
+
+    return person;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response?.status === 404) {
+      return null;
+    }
+    throw error;
+  }
 };
