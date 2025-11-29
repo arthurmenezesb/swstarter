@@ -1,10 +1,40 @@
-import { useContext } from "react";
-import { SearchContext } from "../context/SearchContext";
+import { useState } from "react";
+import api from "../../../services/api";
+import type { Movie } from "../../../types/movie";
+import type { Person } from "../../../types/person";
+
+type SearchType = "people" | "movies";
 
 export const useSearch = () => {
-  const context = useContext(SearchContext);
-  if (!context) {
-    throw new Error("useSearch must be used within a SearchProvider");
-  }
-  return context;
+  const [searchType, setSearchType] = useState<SearchType>("people");
+  const [searchResults, setSearchResults] = useState<(Movie | Person)[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleSearch = async (searchValue: string) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const endpoint = searchType === "movies" ? "/movie" : "/person";
+      const response = await api.get(endpoint, {
+        params: {
+          query: searchValue,
+        },
+      });
+      setSearchResults(response.data.result);
+    } catch {
+      setError("Error fetching data. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return {
+    searchType,
+    setSearchType,
+    searchResults,
+    loading,
+    error,
+    handleSearch,
+  };
 };

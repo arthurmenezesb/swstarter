@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Button from "../../../components/Button";
-import { useSearch } from "../hooks/useSearch";
+import { useSearchContext } from "../context/SearchContext";
 
-const ContentSearch: React.FC = () => {
-  const { searchType, setSearchType } = useSearch();
+const ContentSearch = () => {
+  const { searchType, setSearchType, handleSearch } = useSearchContext();
   const [searchValue, setSearchValue] = useState("");
+
+  const handleSearchClick = () => {
+    handleSearch(searchValue);
+  };
+
   return (
     <div className="flex flex-col gap-4 min-w-sm h-fit">
       <div>
@@ -48,7 +53,7 @@ const ContentSearch: React.FC = () => {
       <div>
         <Button
           label="SEARCH"
-          onClick={() => console.log("search click")}
+          onClick={handleSearchClick}
           disabled={!searchValue}
         />
       </div>

@@ -20,3 +20,15 @@ export const getMovieById = async (id: string): Promise<Movie | undefined> => {
   const movies = await getMoviesFromSwapi();
   return movies.result.find((movie) => movie.uid === id);
 };
+
+export const getMoviesByTitle = async (title: string): Promise<MoviesResponse> => {
+  const movies = await getMoviesFromSwapi();
+  const filteredMovies = movies.result.filter((movie) =>
+    movie.properties.title.toLowerCase().includes(title.toLowerCase())
+  );
+
+  return {
+    ...movies,
+    result: filteredMovies,
+  };
+};

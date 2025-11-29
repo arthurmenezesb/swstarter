@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import DetailsContainer from "@/components/DetailsContainer";
 
 const PersonDetails: React.FC = () => {
-
   const person = {
     name: "Luke Skywalker",
     birth_year: "19BBY",

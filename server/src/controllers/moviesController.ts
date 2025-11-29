@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { getMoviesFromSwapi, getMovieById as getMovieByIdService } from '../services/movieService';
+import { getMoviesFromSwapi, getMovieById as getMovieByIdService, getMoviesByTitle } from '../services/movieService';
 
 export const getMovies = async (
   req: Request,
@@ -7,6 +7,13 @@ export const getMovies = async (
   next: NextFunction
 ) => {
   try {
+    const { query } = req.query;
+
+    if (query) {
+      const movies = await getMoviesByTitle(query as string);
+      return res.json(movies);
+    }
+
     const movies = await getMoviesFromSwapi();
     res.json(movies);
   } catch (error) {
