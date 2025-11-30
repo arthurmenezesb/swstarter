@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import {
   getPersonFromSwapi,
   getPersonByIdFromSwapi,
+  getPersonByName,
 } from '../services/personService';
 
 export const getPerson = async (
@@ -10,6 +11,13 @@ export const getPerson = async (
   next: NextFunction
 ) => {
   try {
+    const { query } = req.query;
+
+    if (query) {
+      const person = await getPersonByName(query as string);
+      return res.json(person);
+    }
+
     const person = await getPersonFromSwapi();
     res.json(person);
   } catch (error) {

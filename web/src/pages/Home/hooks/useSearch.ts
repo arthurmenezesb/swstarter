@@ -1,13 +1,13 @@
 import { useState } from "react";
 import api from "../../../services/api";
 import type { Movie } from "../../../types/movie";
-import type { Person } from "../../../types/person";
+import type { Person, PersonListItem } from "../../../types/person";
 
 type SearchType = "people" | "movies";
 
 export const useSearch = () => {
   const [searchType, setSearchType] = useState<SearchType>("people");
-  const [searchResults, setSearchResults] = useState<(Movie | Person)[]>([]);
+  const [searchResults, setSearchResults] = useState<(Movie | Person | PersonListItem)[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -21,7 +21,7 @@ export const useSearch = () => {
           query: searchValue,
         },
       });
-      setSearchResults(response.data.result);
+      setSearchResults(response.data.results);
     } catch {
       setError("Error fetching data. Please try again.");
     } finally {

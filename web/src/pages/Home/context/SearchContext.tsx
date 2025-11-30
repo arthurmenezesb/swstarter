@@ -1,14 +1,14 @@
 import { createContext, useContext, type ReactNode } from "react";
 import { useSearch } from "../hooks/useSearch";
 import type { Movie } from "../../../types/movie";
-import type { Person } from "../../../types/person";
+import type { Person, PersonListItem } from "../../../types/person";
 
 type SearchType = "people" | "movies";
 
 interface SearchContextType {
   searchType: SearchType;
   setSearchType: (type: SearchType) => void;
-  searchResults: (Movie | Person)[];
+  searchResults: (Movie | Person | PersonListItem)[];
   loading: boolean;
   error: string | null;
   handleSearch: (searchValue: string) => void;

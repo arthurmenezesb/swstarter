@@ -56,3 +56,19 @@ export const getPersonByIdFromSwapi = async (
     throw error;
   }
 };
+export const getPersonByName = async (
+  name: string
+): Promise<PersonResponse> => {
+  const allPeople = await getPersonFromSwapi();
+  const filteredPeople = allPeople.results.filter((person) => {
+    const personName =
+      'properties' in person ? person.properties.name : person.name;
+    return personName.toLowerCase().includes(name.toLowerCase());
+  });
+
+  return {
+    ...allPeople,
+    results: filteredPeople,
+    total_records: filteredPeople.length,
+  };
+};

@@ -23,5 +23,5 @@ export interface Movie {
 
 export interface MoviesResponse {
   message: string;
-  result: Movie[];
+  results: Movie[];
 }

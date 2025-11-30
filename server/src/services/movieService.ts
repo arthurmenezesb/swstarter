@@ -29,6 +29,6 @@ export const getMoviesByTitle = async (title: string): Promise<MoviesResponse> =
 
   return {
     ...movies,
-    result: filteredMovies,
+    results: filteredMovies,
   };
 };

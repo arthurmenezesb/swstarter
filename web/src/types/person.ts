@@ -18,3 +18,9 @@ export interface Person {
   uid: string;
   __v: number;
 }
+
+export interface PersonListItem {
+  uid: string;
+  name: string;
+  url: string;
+}

@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import Button from "../../../components/Button";
 import type { Movie } from "../../../types/movie";
-import type { Person } from "../../../types/person";
+import type { PersonListItem } from "../../../types/person";
 import { useSearchContext } from "../context/SearchContext";
 
 const ContentResults = () => {
@@ -41,7 +41,7 @@ const ContentResults = () => {
               <h3 className="text-md font-semibold">
                 {searchType === "movies"
                   ? (item as Movie).properties.title
-                  : (item as Person).properties.name}
+                  : (item as PersonListItem).name}
               </h3>
             </div>
             <div className="w-1/3 flex justify-end">

@@ -25,5 +25,11 @@ export interface PersonResponse {
   total_pages: number;
   previous: string | null;
   next: string | null;
-  results: Person[];
+  results: (Person | PersonListItem)[];
+}
+
+export interface PersonListItem {
+  uid: string;
+  name: string;
+  url: string;
 }
