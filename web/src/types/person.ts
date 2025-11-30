@@ -12,6 +12,10 @@ export interface Person {
     name: string;
     homeworld: string;
     url: string;
+    movies: {
+      id: number;
+      title: string;
+    }[];
   };
   description: string;
   _id: string;

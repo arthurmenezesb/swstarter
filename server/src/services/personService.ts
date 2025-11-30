@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { Person, PersonResponse } from '../types/person';
 import { cache } from '../utils/cache';
+import { getMovieById } from './movieService';
 
 const PEOPLE_CACHE_KEY = 'people';
 
@@ -46,6 +47,26 @@ export const getPersonByIdFromSwapi = async (
       `https://www.swapi.tech/api/people/${id}`
     );
     const person = response.data;
+
+    if (person.result.properties.films) {
+      const filmPromises = person.result.properties.films.map(async (filmUrl: string) => {
+        const filmId = filmUrl.split('/').filter(Boolean).pop();
+        if (filmId) {
+          const movie = await getMovieById(filmId);
+          if (movie) {
+            return {
+              id: movie.uid,
+              title: movie.properties.title,
+            };
+          }
+        }
+        return null;
+      });
+
+      const movies = (await Promise.all(filmPromises)).filter(Boolean);
+      person.result.properties.movies = movies;
+    }
+
     cache.set(PERSON_CACHE_KEY, person);
 
     return person;
