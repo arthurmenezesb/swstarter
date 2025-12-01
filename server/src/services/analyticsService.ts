@@ -22,7 +22,7 @@ export const getLatestAnalytics = () => {
     });
   });
 };
-export const insertLog = (method: string, url: string, duration: number) => {
+export const insertRequestLog = (method: string, url: string, duration: number) => {
   db.run(
     'INSERT INTO request_logs (method, url, duration) VALUES (?, ?, ?)',
     [method, url, duration],
