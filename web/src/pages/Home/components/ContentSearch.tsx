@@ -46,7 +46,7 @@ const ContentSearch = () => {
           type="search"
           value={searchValue}
           placeholder="e.g Chewbacca, Yoda, Boba Fett"
-          className="w-full border rounded-sm"
+          className="w-full border rounded-sm p-2 font-bold placeholder-pinkish-grey"
           onChange={(e) => setSearchValue(e.target.value)}
         />
       </div>
