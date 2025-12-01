@@ -48,14 +48,11 @@ export const getPersonByIdFromSwapi = async (
     );
     const person = response.data.result;
     if (person && person.properties && person.properties.films) {
-      console.log('1')
       const filmPromises = person.properties.films.map(
         async (filmUrl: string) => {
           const filmId = filmUrl.split('/').filter(Boolean).pop();
-          console.log('2')
           if (filmId) {
             const movieResponse = await getMovieById(filmId, false);
-            console.log('hereeeee')
             if (movieResponse && movieResponse.result) {
               const movie = movieResponse.result;
               return {
