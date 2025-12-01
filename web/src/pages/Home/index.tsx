@@ -1,4 +1,3 @@
-import React from "react";
 import Container from "@/layouts/Container";
 import ContentSearch from "@/pages/Home/components/ContentSearch";
 import ContentResults from "@/pages/Home/components/ContentResults";
