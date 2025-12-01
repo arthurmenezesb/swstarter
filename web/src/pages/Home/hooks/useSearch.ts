@@ -21,7 +21,11 @@ export const useSearch = () => {
           query: searchValue,
         },
       });
-      setSearchResults(response.data.results);
+      if (searchType === "movies") {
+        setSearchResults(response.data.result);
+      } else {
+        setSearchResults(response.data.results);
+      }
     } catch {
       setError("Error fetching data. Please try again.");
     } finally {

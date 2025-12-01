@@ -1,6 +1,11 @@
+export interface Character {
+  id: string;
+  name: string;
+}
+
 export interface Movie {
   properties: {
-    characters: string[];
+    characters: string[] | Character[];
     created: string;
     director: string;
     edited: string;
@@ -23,5 +28,10 @@ export interface Movie {
 
 export interface MoviesResponse {
   message: string;
-  results: Movie[];
+  result: Movie[];
+}
+
+export interface MovieResponse {
+  message: string;
+  result: Movie;
 }

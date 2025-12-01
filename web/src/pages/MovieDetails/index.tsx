@@ -1,39 +1,39 @@
 import React from "react";
-import { useParams, Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import DetailsContainer from "@/components/DetailsContainer";
+import useFetch from "@/hooks/useFetch";
+import type { Movie } from "@/types/movie";
 
 const MovieDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
+  const { data: movie, loading } = useFetch<Movie>(`/movie/${id}`);
 
-  const movie = {
-    id: 3,
-    title: "Return of the Jedi",
-    opening_crawl:
-      "Luke Skywalker has returned to\r\nhis home planet of Tatooine in\r\nan attempt to rescue his\r\nfriend Han Solo from the\r\nclutches of the vile gangster\r\nJabba the Hutt.\r\n\r\nLittle does Luke know that the\r\nGALACTIC EMPIRE has secretly\r\nbegun construction on a new\r\narmored space station even\r\nmore powerful than the first\r\ndreaded Death Star.\r\n\r\nWhen completed, this ultimate\r\nweapon will spell certain doom\r\nfor the small band of rebels\r\nstruggling to restore freedom\r\nto the galaxy...",
-    characters: [
-      { id: 1, name: "Luke Skywalker" },
-      { id: 2, name: "Chewbacca" },
-    ],
-  };
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!loading && !movie) {
+    return <div>Movie not found</div>;
+  }
 
   return (
-    <DetailsContainer title={movie.title}>
+    <DetailsContainer title={movie.properties.title}>
       <div className="w-1/2">
         <p className="text-lg font-bold">Opening Crawl</p>
         <hr className="my-4 border-pinkish-grey" />
-        <p className="whitespace-pre-wrap">{movie.opening_crawl}</p>
+        <p className="whitespace-pre-wrap">{movie.properties.opening_crawl}</p>
       </div>
 
       <div className="w-1/2">
         <p className="text-lg font-bold">Characters</p>
         <hr className="my-4 border-pinkish-grey" />
         <p>
-          {movie.characters.map((character, index) => (
+          {movie.properties.characters.map((character, index) => (
             <React.Fragment key={character.id}>
               <Link to={`/person/${character.id}`} className="text-emerald hover:underline">
                 {character.name}
               </Link>
-              {index < movie.characters.length - 1 && ", "}
+              {index < movie.properties.characters.length - 1 && ", "}
             </React.Fragment>
           ))}
         </p>

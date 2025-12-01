@@ -13,19 +13,30 @@ const useFetch = <T>(url: string): FetchResult<T> => {
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await api.get(url);
+        const response = await api.get(url, { signal });
         setData(response.data.result);
       } catch (error) {
-        setError(error as Error);
+        if ((error as Error).name !== "CanceledError") {
+          setError(error as Error);
+        }
       } finally {
         setLoading(false);
       }
     };
 
-    fetchData();
+    if (url) {
+      fetchData();
+    }
+
+    return () => {
+      controller.abort();
+    };
   }, [url]);
 
   return { data, loading, error };

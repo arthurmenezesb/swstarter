@@ -19,13 +19,18 @@ export interface Person {
   __v: number;
 }
 
-export interface PersonResponse {
+export interface PersonsResponse {
   message: string;
   total_records: number;
   total_pages: number;
   previous: string | null;
   next: string | null;
   results: (Person | PersonListItem)[];
+}
+
+export interface PersonResponse {
+  message: string;
+  result: (Person | PersonListItem);
 }
 
 export interface PersonListItem {

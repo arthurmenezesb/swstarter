@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import {
   getPersonFromSwapi,
-  getPersonByIdFromSwapi,
+  getPersonById as getPersonByIdService,
   getPersonByName,
 } from '../services/personService';
 
@@ -32,7 +32,7 @@ export const getPersonById = async (
 ) => {
   try {
     const { id } = req.params;
-    const person = await getPersonByIdFromSwapi(id);
+    const person = await getPersonByIdService(id);
     if (!person) {
       return res.status(404).json({ message: 'Person not found' });
     }

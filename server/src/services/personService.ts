@@ -1,17 +1,17 @@
 import axios from 'axios';
-import { Person, PersonResponse } from '../types/person';
+import { Person, PersonsResponse, PersonResponse } from '../types/person';
 import { cache } from '../utils/cache';
 import { getMovieById } from './movieService';
 
 const PEOPLE_CACHE_KEY = 'people';
 
-export const getPersonFromSwapi = async (): Promise<PersonResponse> => {
-  const cachedPerson = cache.get<PersonResponse>(PEOPLE_CACHE_KEY);
+export const getPersonFromSwapi = async (): Promise<PersonsResponse> => {
+  const cachedPerson = cache.get<PersonsResponse>(PEOPLE_CACHE_KEY);
   if (cachedPerson) {
     return cachedPerson;
   }
 
-  const allPeople: PersonResponse = {
+  const allPeople: PersonsResponse = {
     message: '',
     total_records: 0,
     total_pages: 0,
@@ -22,7 +22,7 @@ export const getPersonFromSwapi = async (): Promise<PersonResponse> => {
   let nextUrl = allPeople.next;
 
   while (nextUrl) {
-    const response = await axios.get<PersonResponse>(nextUrl);
+    const response = await axios.get<PersonsResponse>(nextUrl);
     const { results, next } = response.data;
     allPeople.results.push(...results);
     nextUrl = next;
@@ -34,7 +34,7 @@ export const getPersonFromSwapi = async (): Promise<PersonResponse> => {
 };
 
 export const getPersonByIdFromSwapi = async (
-  id: string
+  id: string,
 ): Promise<Person | null> => {
   const PERSON_CACHE_KEY = `person-${id}`;
   const cachedPerson = cache.get<Person>(PERSON_CACHE_KEY);
@@ -46,25 +46,30 @@ export const getPersonByIdFromSwapi = async (
     const response = await axios.get(
       `https://www.swapi.tech/api/people/${id}`
     );
-    const person = response.data;
-
-    if (person.result.properties.films) {
-      const filmPromises = person.result.properties.films.map(async (filmUrl: string) => {
-        const filmId = filmUrl.split('/').filter(Boolean).pop();
-        if (filmId) {
-          const movie = await getMovieById(filmId);
-          if (movie) {
-            return {
-              id: movie.uid,
-              title: movie.properties.title,
-            };
+    const person = response.data.result;
+    if (person && person.properties && person.properties.films) {
+      console.log('1')
+      const filmPromises = person.properties.films.map(
+        async (filmUrl: string) => {
+          const filmId = filmUrl.split('/').filter(Boolean).pop();
+          console.log('2')
+          if (filmId) {
+            const movieResponse = await getMovieById(filmId, false);
+            console.log('hereeeee')
+            if (movieResponse && movieResponse.result) {
+              const movie = movieResponse.result;
+              return {
+                id: movie.uid,
+                title: movie.properties.title,
+              };
+            }
           }
+          return null;
         }
-        return null;
-      });
+      );
 
       const movies = (await Promise.all(filmPromises)).filter(Boolean);
-      person.result.properties.movies = movies;
+      person.properties.movies = movies;
     }
 
     cache.set(PERSON_CACHE_KEY, person);
@@ -79,11 +84,10 @@ export const getPersonByIdFromSwapi = async (
 };
 export const getPersonByName = async (
   name: string
-): Promise<PersonResponse> => {
+): Promise<PersonsResponse> => {
   const allPeople = await getPersonFromSwapi();
   const filteredPeople = allPeople.results.filter((person) => {
-    const personName =
-      'properties' in person ? person.properties.name : person.name;
+    const personName = 'name' in person ? person.name : person.properties.name;
     return personName.toLowerCase().includes(name.toLowerCase());
   });
 
@@ -92,4 +96,21 @@ export const getPersonByName = async (
     results: filteredPeople,
     total_records: filteredPeople.length,
   };
+};
+
+export const getPersonById = async (
+  id: string,
+): Promise<PersonResponse | null> => {
+  const person = await getPersonByIdFromSwapi(id);
+
+  if (!person) {
+    return null;
+  }
+
+  const personResponse: PersonResponse = {
+    message: 'ok',
+    result: person,
+  };
+
+  return personResponse;
 };

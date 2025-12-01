@@ -1,6 +1,9 @@
 export interface Movie {
   properties: {
-    characters: string[];
+    characters: {
+      id: number;
+      name: string;
+    }[];
     created: string;
     director: string;
     edited: string;
@@ -19,4 +22,9 @@ export interface Movie {
   _id: string;
   uid: string;
   __v: number;
+}
+
+export interface MoviesResponse {
+  message: string;
+  result: Movie[];
 }

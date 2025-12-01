@@ -27,7 +27,7 @@ export const getMovieById = async (
   next: NextFunction
 ) => {
   try {
-    const movie = await getMovieByIdService(req.params.id);
+    const movie = await getMovieByIdService(req.params.id, true);
     if (!movie) {
       return res.status(404).json({ message: 'Movie not found' });
     }
