@@ -8,7 +8,7 @@ const PersonDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { data: person, loading } = useFetch<Person>(`/person/${id}`);
 
-  if (loading) {
+  if (loading || !person) {
     return <div>Loading...</div>;
   }
 

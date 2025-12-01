@@ -8,27 +8,23 @@ const MovieDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { data: movie, loading } = useFetch<Movie>(`/movie/${id}`);
 
-  if (loading) {
+  if (loading || !movie) {
     return <div>Loading...</div>;
   }
 
-  if (!loading && !movie) {
-    return <div>Movie not found</div>;
-  }
-
   return (
-    <DetailsContainer title={movie.properties.title}>
+    <DetailsContainer title={movie?.properties.title || ""}>
       <div className="w-1/2">
         <p className="text-lg font-bold">Opening Crawl</p>
         <hr className="my-4 border-pinkish-grey" />
-        <p className="whitespace-pre-wrap">{movie.properties.opening_crawl}</p>
+        <p className="whitespace-pre-wrap">{movie?.properties.opening_crawl}</p>
       </div>
 
       <div className="w-1/2">
         <p className="text-lg font-bold">Characters</p>
         <hr className="my-4 border-pinkish-grey" />
         <p>
-          {movie.properties.characters.map((character, index) => (
+          {movie?.properties.characters.map((character, index) => (
             <React.Fragment key={character.id}>
               <Link to={`/person/${character.id}`} className="text-emerald hover:underline">
                 {character.name}
