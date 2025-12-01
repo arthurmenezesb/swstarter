@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS request_logs (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  method TEXT,
+  url TEXT,
+  duration REAL,
+  timestamp DATETIME DEFAULT CURRENT_TIMESTAMP
+);
