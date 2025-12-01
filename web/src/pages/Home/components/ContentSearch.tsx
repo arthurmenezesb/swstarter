@@ -51,11 +51,7 @@ const ContentSearch = () => {
         />
       </div>
       <div>
-        <Button
-          label="SEARCH"
-          onClick={handleSearchClick}
-          disabled={!searchValue}
-        />
+        <Button label="SEARCH" onClick={handleSearchClick} disabled={!searchValue} />
       </div>
     </div>
   );
