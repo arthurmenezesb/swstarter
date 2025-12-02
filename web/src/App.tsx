@@ -4,11 +4,16 @@ import Layout from "@/layouts/Layout";
 import Home from "@/pages/Home";
 import MovieDetails from "@/pages/MovieDetails";
 import PersonDetails from "@/pages/PersonDetails";
+import { LoadingProvider, useLoading } from "@/context/LoadingContext";
+import LoadingOverlay from "@/components/LoadingOverlay";
 
-const App: React.FC = () => {
+const AppContent: React.FC = () => {
+  const { isLoading } = useLoading();
+
   return (
     <Router>
       <Layout>
+        {isLoading && <LoadingOverlay />}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/movie/:id" element={<MovieDetails />} />
@@ -16,6 +21,14 @@ const App: React.FC = () => {
         </Routes>
       </Layout>
     </Router>
+  );
+};
+
+const App: React.FC = () => {
+  return (
+    <LoadingProvider>
+      <AppContent />
+    </LoadingProvider>
   );
 };
 

@@ -6,10 +6,10 @@ import type { Movie } from "@/types/movie";
 
 const MovieDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { data: movie, loading } = useFetch<Movie>(`/movie/${id}`);
+  const { data: movie } = useFetch<Movie>(`/movie/${id}`);
 
-  if (loading || !movie) {
-    return <div>Loading...</div>;
+  if (!movie) {
+    return null;
   }
 
   return (

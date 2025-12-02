@@ -1,15 +1,15 @@
 import { useState, useEffect } from "react";
 import api from "@/services/api";
+import { useLoading } from "@/context/LoadingContext";
 
 interface FetchResult<T> {
   data: T | null;
-  loading: boolean;
   error: Error | null;
 }
 
 const useFetch = <T>(url: string): FetchResult<T> => {
+  const { setIsLoading } = useLoading();
   const [data, setData] = useState<T | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ const useFetch = <T>(url: string): FetchResult<T> => {
 
     const fetchData = async () => {
       try {
-        setLoading(true);
+        setIsLoading(true);
         const response = await api.get(url, { signal });
         setData(response.data.result);
       } catch (error) {
@@ -26,7 +26,7 @@ const useFetch = <T>(url: string): FetchResult<T> => {
           setError(error as Error);
         }
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
@@ -39,7 +39,7 @@ const useFetch = <T>(url: string): FetchResult<T> => {
     };
   }, [url]);
 
-  return { data, loading, error };
+  return { data, error };
 };
 
 export default useFetch;
