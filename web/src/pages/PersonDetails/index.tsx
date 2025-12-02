@@ -3,10 +3,19 @@ import { Link, useParams } from "react-router-dom";
 import DetailsContainer from "@/components/DetailsContainer";
 import useFetch from "@/hooks/useFetch";
 import type { Person } from "@/types/person";
+import ErrorDisplay from "@/components/ErrorDisplay";
 
 const PersonDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { data: person } = useFetch<Person>(`/person/${id}`);
+  const { data: person, error } = useFetch<Person>(`/person/${id}`);
+
+  if (error?.response?.status === 404) {
+    return <ErrorDisplay message="Person not found" />;
+  }
+
+  if (error) {
+    return <ErrorDisplay message="Something went wrong!" />;
+  }
 
   if (!person) {
     return null;

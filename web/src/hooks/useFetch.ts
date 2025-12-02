@@ -1,16 +1,17 @@
 import { useState, useEffect } from "react";
+import { AxiosError } from "axios";
 import api from "@/services/api";
 import { useLoading } from "@/context/LoadingContext";
 
 interface FetchResult<T> {
   data: T | null;
-  error: Error | null;
+  error: AxiosError | null;
 }
 
 const useFetch = <T>(url: string): FetchResult<T> => {
   const { setIsLoading } = useLoading();
   const [data, setData] = useState<T | null>(null);
-  const [error, setError] = useState<Error | null>(null);
+  const [error, setError] = useState<AxiosError | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -22,8 +23,8 @@ const useFetch = <T>(url: string): FetchResult<T> => {
         const response = await api.get(url, { signal });
         setData(response.data.result);
       } catch (error) {
-        if ((error as Error).name !== "CanceledError") {
-          setError(error as Error);
+        if ((error as AxiosError).name !== "CanceledError") {
+          setError(error as AxiosError);
         }
       } finally {
         setIsLoading(false);

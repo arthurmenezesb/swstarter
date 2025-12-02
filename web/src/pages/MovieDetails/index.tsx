@@ -3,10 +3,19 @@ import { Link, useParams } from "react-router-dom";
 import DetailsContainer from "@/components/DetailsContainer";
 import useFetch from "@/hooks/useFetch";
 import type { Movie } from "@/types/movie";
+import ErrorDisplay from "@/components/ErrorDisplay";
 
 const MovieDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const { data: movie } = useFetch<Movie>(`/movie/${id}`);
+  const { data: movie, error } = useFetch<Movie>(`/movie/${id}`);
+
+  if (error?.response?.status === 404) {
+    return <ErrorDisplay message="Movie not found" />;
+  }
+
+  if (error) {
+    return <ErrorDisplay message="Something went wrong!" />;
+  }
 
   if (!movie) {
     return null;
